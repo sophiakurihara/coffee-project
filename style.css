@@ -1,9 +1,13 @@
-table {
-    border-collapse: collapse;
-    margin: 15px 0;
-}
 
-td, th {
-    border: 1px solid black;
-    padding: 5px 10px;
+.row {
+    width: auto;
+    text-align: center;
+}
+#main-heading {
+    text-align: center;
+}
+.coffee-name {
+    font-size: 2em;
+    margin: 10px 10px;
+    padding: 0px 50px 0px 50px;
 }

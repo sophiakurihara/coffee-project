@@ -1,34 +1,86 @@
-"use strict"
+"use strict";
 
 function renderCoffee(coffee) {
-    var html = '<tr class="coffee">';
-    html += '<td>' + coffee.id + '</td>';
-    html += '<td>' + coffee.name + '</td>';
-    html += '<td>' + coffee.roast + '</td>';
-    html += '</tr>';
-
+    var html = '<div class="col-md-6">';
+    html += '<h2 class="coffee-name">' + coffee.name + '</h2>';
+    html += '<span>' + coffee.roast + '</span>';
+    html+= '</div class="col">';
     return html;
 }
 
+//***completed
+//add functionality for text input to update immediately
 function renderCoffees(coffees) {
     var html = '';
-    for(var i = coffees.length - 1; i >= 0; i--) {
+    for(var i = 0; i <= coffees.length - 1; i++) {
         html += renderCoffee(coffees[i]);
     }
     return html;
 }
 
+//fix this function to have coffees in ascending order
+var submitButton = document.querySelector('#submit');
+var userSearch = document.querySelector('#user-search');
+var roastSelection = document.querySelector('#roast-selection');
+var newRoast = document.querySelector('#new-roast');
+var newName = document.querySelector('#new-name');
+var tbody = document.querySelector('#coffees');
+
+function findRoast(e) {
+    e.preventDefault();
+    var dropDown = roastSelection.value;
+    var roasts = [];
+
+    coffees.forEach(function(coffee){
+        if (coffee.roast === dropDown){
+            roasts.push(coffee);
+        } else {
+            console.log('no roast type');
+        }
+
+        tbody.innerHTML = renderCoffees(roasts);
+    });
+}
+
 function updateCoffees(e) {
     e.preventDefault(); // don't submit the form, we just want to update the data
-    var selectedRoast = roastSelection.value;
+    var selectedRoast = userSearch.value;
     var filteredCoffees = [];
-    coffees.forEach(function(coffee) {
-        if (coffee.roast === selectedRoast) {
+    selectedRoast = selectedRoast.toLowerCase();
+
+    coffees.forEach(function(coffee){
+        //noticed that adding this code will cause the displayed text to be lowercase as well
+        // coffee.roast = coffee.roast.toLowerCase();
+        // coffee.name = coffee.name.toLowerCase();
+
+        if ((coffee.roast.toLowerCase()).includes(selectedRoast)){
             filteredCoffees.push(coffee);
+        } else if ((coffee.name.toLowerCase()).includes(selectedRoast)){
+            filteredCoffees.push(coffee);
+        } else {
+            console.log('none');
         }
     });
     tbody.innerHTML = renderCoffees(filteredCoffees);
+
 }
+
+function addCoffees(e) {
+    e.preventDefault();
+    var name = (newName.value).toString();
+    var roast = (newRoast.value).toString();
+    var id = coffees.length + 1;
+
+    var newCoffee = coffees.push({
+        id: id,
+        name: name,
+        roast: roast
+    });
+
+    tbody.innerHTML = renderCoffees(coffees);
+    console.log(coffees);
+}
+
 
 // from http://www.ncausa.org/About-Coffee/Coffee-Roasts-Guide
 var coffees = [
@@ -48,10 +100,8 @@ var coffees = [
     {id: 14, name: 'French', roast: 'dark'},
 ];
 
-var tbody = document.querySelector('#coffees');
-var submitButton = document.querySelector('#submit');
-var roastSelection = document.querySelector('#roast-selection');
-
 tbody.innerHTML = renderCoffees(coffees);
 
-submitButton.addEventListener('click', updateCoffees);
+roastSelection.addEventListener('change', findRoast);
+userSearch.addEventListener('keyup', updateCoffees);
+submitButton.addEventListener('click', addCoffees);
