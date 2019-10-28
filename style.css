@@ -1,4 +1,14 @@
+.banner {
+    /*display: inline-block;*/
+    font-family: "Fira Code", monospace;
+    color: #fff;
+    background-color: #000;
+    height: 250px;
+}
 
+#title {
+    display: inline-block;
+}
 .row {
     width: auto;
     text-align: center;
